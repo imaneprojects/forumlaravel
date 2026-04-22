@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ asset('fontawesome-free-6.5.2-web/css/all.min.css') }}">
+    <style>
+        #app a {
+            color: rgb(33, 97, 140);
+            text-decoration: none;
+        }
+        #app a :hover{
+            color:rgb(53, 139, 196);
+        }
+
+        #icons {
+            color: rgb(33, 97, 140);
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        .body {
+            font-family: "Helvetica", "sans-serif", monospace;
+        }
+        .profile-container2 {
+            position: relative;
+            text-align: center;
+        }
+        .profile-container2 img.profile-photo2 {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            position: absolute;
+            bottom: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 2px solid white;
+        }
+        .user-role {
+            font-size: 13px;
+            padding-left: 12px;
+            color: #6c757d;
+        }
+        .user-name {
+            font-weight: 600;
+            padding-left: 12px;
+        }
+        .s {
+            text-align: left;
+            padding: 10px;
+            font-size: 13px;
+            padding-left: 20px;
+        }
+        .image-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 5px;
+            overflow: hidden;
+        }
+        .image-container img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body class="body bg-light">
+@extends('layouts.app')
+
+@section('content')
+<div id="app">
+    <div class="row">
+        <div class="col-md-3 order-md-last">
+            <div class="">
+                <!-- Première partie -->
+                <div><p></p></div>
+                <div class="display-7 card p-2" style="margin-right: 10px; font-family: system-ui; box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);">
+                    <h4 style="color: rgb(33, 97, 140); font-weight: bold; font-size: 18px;">
+                        Thèmes
+                    </h4>
+                    @foreach($themes as $theme)
+                    <a href="{{ route('topics.index2', ['theme_id' => $theme->id]) }}" class="d-flex justify-content-between align-items-center my-2">
+                        <span style="color: rgb(44, 62, 80); font-size: 14px;">
+                            @if($theme->nom === 'Math')
+                                <i id="icons" class="fa-solid fa-square-root-variable me-2"></i>
+                            @elseif($theme->nom === 'Physique')
+                                <i id="icons" class="fa-solid fa-flask me-2" style="padding-right: 4px;"></i>
+                            @elseif($theme->nom === 'SVT')
+                                <i id="icons" class="fa-solid fa-earth-americas me-2" style="padding-right: 4px;"></i>
+                            @elseif($theme->nom === 'Langues')
+                                <i id="icons" class="fa-solid fa-language me-2"></i>
+                            @else
+                                <i id="icons" class="bi bi-question-circle-fill me-2"></i> 
+                            @endif
+                            {{ ucfirst($theme->nom) }}
+                        </span>
+                        <span class="badge text-secondary">{{ ucfirst($theme->topics_count) }}</span>
+                    </a>
+                    @endforeach
+                </div>
+
+                @auth 
+                <div class="display-7 card p-2" style="margin-right: 10px; font-family: system-ui; box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);margin-top: 10px; text-align : center; color: rgb(31, 97, 141);padding:20px; ">
+                <i class="fa-solid fa-plus" style="font-size: 30px; padding: 15px; "></i>
+                <h4 style="font-weight: bold; ">Prêt à partager vos idées ?</h4>
+                <p style="font-size:12px;padding:20px;">
+                    Publiez vos réflexions pour les partager avec la communauté ou créez une nouvelle communauté pour vous connecter avec des personnes partageant les mêmes intérêts.</p>
+                <a href="{{ route('topics.create') }}" class="btn" style=" background-color: rgb(57, 99, 168) ;color:white;font-size: 12px; "> 
+                    Créer nouveau post
+                </a> 
+                
+                </div>
+                @endauth
+                
+                <div style="background-color: white;margin-right: 10px; font-family: system-ui;border:solid 1px #ccc;">      
+                
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <!-- Deuxième partie -->
+            <div class="row mt-3 bg-white">
+                @foreach($themes as $theme)
+                    <div class="col">
+                        <div class="bg-light"><p></p></div>
+                        <a href="{{ route('topics.index2', ['theme_id' => $theme->id]) }}" class="btn btn-outline">{{ ucfirst($theme->nom) }}</a>
+                    </div>
+                @endforeach
+                <div class="mb-3 bg-l">
+                    @foreach ($topics as $topic)
+                        <div class="topic-item mb-4">
+                            @if ($topic->images->count() > 0)
+                                <div class="image-container mb-2">
+                                    @foreach ($topic->images as $image)
+                                        <img src="{{ asset('storage/images/' . $image->path) }}" alt="Image du topic" class="img-fluid mb-2">
+                                    @endforeach  
+                                </div>
+                            @endif
+                            <div class="d-flex align-items-center" style="padding-bottom: 15px;">
+                                @if ($topic->user->profil)
+                                    <img src="{{ asset('storage/profil/' . $topic->user->profil) }}" alt="Photo de profil" class="img-fluid rounded-circle me-2" style="width: 40px; height: 40px;">
+                                @else
+                                    <img src="{{ asset('default-profile.png') }}" alt="Photo de profil par défaut" class="img-fluid rounded-circle me-2" style="width: 40px; height: 40px;">
+                                @endif
+                                <div>
+                                    <a href="{{ route('profile.showUser', $topic->user->id) }}" style="font-weight: bold; color: black; font-size: 13px;">{{ ucfirst($topic->user->nom) }}</a>
+                                    <div style="color: gray; font-size: 11px;"><i class="fa-regular fa-clock me-1"></i>{{ $topic->created_at->diffForHumans() }}</div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center" style="padding-left: 30px;">
+                                <a href="{{ route('topics.show', $topic->id) }}" class="inline-block hover:text-black-500" style="color: rgb(33, 97, 140);">
+                                    <strong class="card-title" style="font-size: 16px;">{{ ucfirst($topic->title) }}</strong>
+                                </a>
+                                <p class="card-text">
+                                    @foreach($topic->themes as $theme)
+                                        <span class="badge text-secondary" style="font-size: 10px;">{{ ucfirst($theme->nom) }}</span>
+                                    @endforeach
+                                </p>
+                            </div>
+                            <p style="padding-top: 5px; font-size: 13px; padding-left: 30px;">
+                                {!! ucfirst($topic->content) !!}
+                            </p>
+                            <p class="text-end" style="font-size: 12px; color: gray;">
+                                <span class="d-flex align-items-center">
+                                    <i class="fa-regular fa-eye me-1"></i>
+                                    {{ $topic->views_count }}
+                                </span>
+                            </p>
+                            <hr>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 order-md-first">
+            <div><p></p></div>
+            @auth
+            <div class="card mb-3 bg-white" style="margin-left: 10px;">
+                <div class="card-body">
+                    <h4 class="fs-6" style="color: rgb(33, 97, 140); font-weight: bold;">Tableau de bord</h4>
+                </div>
+                <p style="border-top: 1px solid #ccc;"></p>
+                <div class="user-details" style="text-align: center;">
+                    <div class="profile-container2">
+                        @if($user->profil)
+                            <img src="{{ asset('storage/profil/' . $user->profil) }}" alt="Photo de profil" class="profile-photo2">
+                        @else
+                            <img src="{{ asset('default-profile.png') }}" alt="Photo de profil par défaut" class="profile-photo2">
+                        @endif
+                    </div>
+                    <div class="user-name" style="padding-top: 70px; color: rgb(33, 97, 140); text-transform: uppercase;">{{ ucfirst($user->nom) }}</div>
+                    <div class="user-role">{{ ucfirst($user->role) }}</div>
+                    <div style="border-top: 1px solid #ccc; margin-top: 20px;"></div>
+                    <div class="s">
+                        <a href="{{ route('profile.edit', $user->id) }}" style="color: rgb(33, 97, 140);"><i class="fa-solid fa-pen-to-square"></i> Editer le profil</a>
+                    </div>
+                    <div style="border-top: 1px solid #ccc;"></div>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-link nav-link" id="dec" style="text-align: left; padding: 10px; color: rgb(33, 97, 140); font-size: 13px; padding-left: 20px;">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            Se déconnecter
+                        </button>
+                    </form>
+                </div>
+            </div>
+            @endauth
+        </div>
+    </div>
+</div>
+@endsection
+    @section("scripts")
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '#task-text' ) )
+            .catch( error => {
+                 console.error( error );
+             } );
+    </script>
+    
+    @endsection
+</body>
+</html>
+
+
