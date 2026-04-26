@@ -117,7 +117,7 @@
     @endauth
 
     @guest
-        <div class="card mt-3 text-center" ">
+        <div class="card  text-center" ">
 
             <div class="card-body">
 

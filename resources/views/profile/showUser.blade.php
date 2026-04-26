@@ -55,7 +55,7 @@
                                 @endif
                                 <div class="d-flex justify-content-between align-items-center" >
                                     <a href="{{ route('topics.show', $topic->id) }}"
-                                    class="topic-title ms-2 ">
+                                    class="topic-title m-2 ">
                                         {{ ucfirst($topic->title) }}
                                     </a>
                                     <div class="d-flex gap-1 flex-wrap petit">

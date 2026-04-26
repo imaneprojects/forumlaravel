@@ -33,7 +33,7 @@
                                     <input type="password" id="password" name="password" class="form-control bg-light">
                                 </div>
                                 <br>
-                                <div class="mb-3 btn" >
+                                <div class="mb-3 btn" style="display: flex; justify-content: center;">
                                     <button class="button" style="width: 350px; height:39px" type="submit">Se connecter</button>
                                 </div>
                                 <div class="mb-3 text-center " >

@@ -30,16 +30,18 @@
                         <input type="email" name="email" class="form-control" value="{{ $user->email }}" required>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Mot de passe</label>
-                        <input type="password" name="password" class="form-control">
-                        <small class="text-muted">Laissez vide si vous ne voulez pas changer</small>
-                    </div>
+                    @if(Auth::id() == $user->id)
+                        <div class="mb-3">
+                            <label class="form-label">Mot de passe</label>
+                            <input type="password" name="password" class="form-control">
+                            <small class="text-muted">Laissez vide si vous ne voulez pas changer</small>
+                        </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Confirmer mot de passe</label>
-                        <input type="password" name="password_confirmation" class="form-control">
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">Confirmer mot de passe</label>
+                            <input type="password" name="password_confirmation" class="form-control">
+                        </div>
+                    @endif
 
                     @if(Auth::user()->role === 'admin')
                     <div class="mb-3">
